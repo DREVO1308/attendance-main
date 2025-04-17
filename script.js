@@ -21,18 +21,21 @@ function startScan() {
 
   // Choose correct camera (rear if available on phones)
   Instascan.Camera.getCameras().then(function (cameras) {
-    if (cameras.length > 1) {
-      // Prefer rear camera (usually at index 1)
-      scanner.start(cameras[1]);
-    } else if (cameras.length > 0) {
-      scanner.start(cameras[0]);
+    if (cameras.length > 0) {
+      // Try to find the back camera
+      let backCamera = cameras.find(camera => camera.name.toLowerCase().includes('back'));
+  
+      // If found, use it — otherwise, use the first one
+      scanner.start(backCamera || cameras[0]);
     } else {
-      alert('No cameras found.');
+      console.error('No cameras found.');
+      alert('No camera found on this device.');
     }
   }).catch(function (e) {
     console.error(e);
-    alert('Camera access failed.');
+    alert('Error accessing camera: ' + e);
   });
+  
 }
 
 function sendDataToSheet(name, matric, session, qrContent) {
