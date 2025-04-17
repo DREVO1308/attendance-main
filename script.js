@@ -1,4 +1,6 @@
 let scanner;
+let cameras = [];
+let currentCameraIndex = 0;
 
 function startScan() {
   const name = document.getElementById('name').value;
@@ -13,25 +15,15 @@ function startScan() {
   scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 
   scanner.addListener('scan', function (content) {
-    // Send data to Google Sheets immediately after scanning
     sendDataToSheet(name, matric, session, content);
     alert('Attendance recorded!');
-    scanner.stop(); // Stop scanning after successful submission
+    scanner.stop();
   });
 
-  // Choose correct camera (rear if available on phones)
-  Instascan.Camera.getCameras().then(function (cameras) {
-    if (cameras.length > 0) {
-      // Try to find the back camera
-      let selectedCamera = cameras.find(camera => camera.name.toLowerCase().includes('back'));
-
-// If no 'back' camera is found, try the **last camera** in the list (usually rear on phones)
-if (!selectedCamera && cameras.length > 1) {
-  selectedCamera = cameras[cameras.length - 1];
-}
-
-scanner.start(selectedCamera || cameras[0]);
-
+  Instascan.Camera.getCameras().then(function (availableCameras) {
+    if (availableCameras.length > 0) {
+      cameras = availableCameras;
+      scanner.start(cameras[currentCameraIndex]);
     } else {
       console.error('No cameras found.');
       alert('No camera found on this device.');
@@ -40,7 +32,15 @@ scanner.start(selectedCamera || cameras[0]);
     console.error(e);
     alert('Error accessing camera: ' + e);
   });
-  
+}
+
+function switchCamera() {
+  if (cameras.length > 1) {
+    currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
+    scanner.start(cameras[currentCameraIndex]);
+  } else {
+    alert('No alternate camera available');
+  }
 }
 
 function sendDataToSheet(name, matric, session, qrContent) {
