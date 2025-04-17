@@ -23,10 +23,15 @@ function startScan() {
   Instascan.Camera.getCameras().then(function (cameras) {
     if (cameras.length > 0) {
       // Try to find the back camera
-      let backCamera = cameras.find(camera => camera.name.toLowerCase().includes('back'));
-  
-      // If found, use it — otherwise, use the first one
-      scanner.start(backCamera || cameras[0]);
+      let selectedCamera = cameras.find(camera => camera.name.toLowerCase().includes('back'));
+
+// If no 'back' camera is found, try the **last camera** in the list (usually rear on phones)
+if (!selectedCamera && cameras.length > 1) {
+  selectedCamera = cameras[cameras.length - 1];
+}
+
+scanner.start(selectedCamera || cameras[0]);
+
     } else {
       console.error('No cameras found.');
       alert('No camera found on this device.');
