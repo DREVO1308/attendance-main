@@ -44,7 +44,7 @@ function switchCamera() {
 }
 
 function sendDataToSheet(name, matric, session, qrContent) {
-  const url = 'https://script.google.c';
+  const url = 'https://script.google.com/macros/s/AKfycbwHdk0M_xC3Q3zymC1s9rVJs-b6SKj5b7Ym71h25-v3qcHQJZrR72lB-yFOc44UnOY/exec';
 
   const data = {
     name: name,
