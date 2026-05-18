@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin QR Generator</title>
+  <style>
+    body {
+      background-color: #d4edda;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 40px;
+      position: relative;
+    }
+
+    .watermark {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      color: rgba(0, 0, 0, 0.05);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    #qrcode {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="watermark">NSUK</div>
+
+ <div id="authSection">
+  <h2>Admin Login</h2>
+  <input type="text" id="adminUser" placeholder="Username" required><br><br>
+  <input type="password" id="adminPass" placeholder="Password" required><br><br>
+  <button onclick="authenticate()">Login</button>
+ </div>
+
+ <div id="adminSection" style="display: none;">
+  <h2>Lecturer QR Code Generator</h2>
+
+  <label for="lecturerName">Lecturer Name:</label><br>
+  <input type="text" id="lecturerName" required><br><br>
+
+  <label for="courseCode">Course Code:</label><br>
+  <input type="text" id="courseCode" required><br><br>
+
+  <button onclick="generateQR()">Generate QR Code</button>
+
+  <div id="qrcode"></div>
+ </div>
+
+ <script>
+  const adminUsername = "admin";
+  const adminPassword = "admin123";
+
+  function authenticate() {
+    const user = document.getElementById("adminUser").value.trim();
+    const pass = document.getElementById("adminPass").value;
+
+    if (user === adminUsername && pass === adminPassword) {
+      document.getElementById("authSection").style.display = "none";
+      document.getElementById("adminSection").style.display = "block";
+    } else {
+      alert("Invalid username or password.");
+    }
+  }
+ </script>
+
+
+<!----and qr generation script---->
+
+  <script>
+  function generateQR() {
+    const name = document.getElementById("lecturerName").value.trim();
+    const code = document.getElementById("courseCode").value.trim();
+
+    if (!name || !code) {
+      alert("Please fill in both fields.");
+      return;
+    }
+
+    const qrData = `Lecturer: ${name}, Course: ${code}`;
+    sessionStorage.setItem("qrData", qrData);
+
+    window.location.href = "qr_display.html";
+  }
+</script>
+</body>
+</html>

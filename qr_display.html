@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Display</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #757c14a4;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #qrcode {
+      padding: 20px;
+      border: 2px solid #ccc;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="qrcode"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const qrData = sessionStorage.getItem("qrData");
+    if (!qrData) {
+      document.getElementById("qrcode").innerText = "No QR data found.";
+    } else {
+      new QRCode(document.getElementById("qrcode"), {
+        text: qrData,
+        width: 250,
+        height: 250
+      });
+    }
+  </script>
+</body>
+</html>
