@@ -1,0 +1,21 @@
+{
+  "name": "attendance-main",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "start": "nodemon script.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DREVO1308/attendance-main.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DREVO1308/attendance-main/issues"
+  },
+  "homepage": "https://github.com/DREVO1308/attendance-main#readme",
+  "description": ""
+}
