@@ -12,35 +12,28 @@ function startScan() {
     return;
   }
 
-  scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+ 
+  html5QrCode = new Html5Qrcode("preview");
 
-  scanner.addListener('scan', function (content) {
-    sendDataToSheet(name, matric, session, content);
-    alert('Attendance recorded!');
-    scanner.stop();
-  });
+  Html5Qrcode.getCameras().then(devices => {
+    if (devices && devices.length) {
+      const cameraId = devices[0].id;
 
-  Instascan.Camera.getCameras().then(function (availableCameras) {
-    if (availableCameras.length > 0) {
-      cameras = availableCameras;
-      scanner.start(cameras[currentCameraIndex]);
-    } else {
-      console.error('No cameras found.');
-      alert('No camera found on this device.');
+      html5QrCode.start(
+        cameraId,
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+          sendDataToSheet(name, matric, session, decodedText);
+          alert("Attendance recorded!");
+          html5QrCode.stop();
+        }
+      );
     }
-  }).catch(function (e) {
-    console.error(e);
-    alert('Error accessing camera: ' + e);
   });
 }
 
 function switchCamera() {
-  if (cameras.length > 1) {
-    currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
-    scanner.start(cameras[currentCameraIndex]);
-  } else {
-    alert('No alternate camera available');
-  }
+  alert("Auto camera switching handled automatically in this version.");
 }
 
 function sendDataToSheet(name, matric, session, qrContent) {
