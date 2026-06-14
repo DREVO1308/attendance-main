@@ -1,6 +1,4 @@
-let scanner;
-let cameras = [];
-let currentCameraIndex = 0;
+let html5QrCode;
 
 function startScan() {
   const name = document.getElementById('name').value;
@@ -12,28 +10,38 @@ function startScan() {
     return;
   }
 
- 
   html5QrCode = new Html5Qrcode("preview");
 
   Html5Qrcode.getCameras().then(devices => {
     if (devices && devices.length) {
-      const cameraId = devices[0].id;
+
+      // try back camera first
+      let cameraId = devices[0].id;
 
       html5QrCode.start(
         cameraId,
-        { fps: 10, qrbox: 250 },
+        {
+          fps: 10,
+          qrbox: 250
+        },
         (decodedText) => {
           sendDataToSheet(name, matric, session, decodedText);
           alert("Attendance recorded!");
-          html5QrCode.stop();
+
+          html5QrCode.stop().then(() => {
+            html5QrCode.clear();
+          });
         }
       );
     }
+  }).catch(err => {
+    console.error("Camera error:", err);
+    alert("Camera access failed: " + err);
   });
 }
 
 function switchCamera() {
-  alert("Auto camera switching handled automatically in this version.");
+  alert("Camera switching will be added next (optional upgrade).");
 }
 
 function sendDataToSheet(name, matric, session, qrContent) {
