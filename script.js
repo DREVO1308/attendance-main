@@ -25,6 +25,7 @@ function startScan() {
           qrbox: 250
         },
         (decodedText) => {
+          console.log("QR DETECTED:", decodedText)
           sendDataToSheet(name, matric, session, decodedText);
           alert("Attendance recorded!");
 
@@ -57,7 +58,7 @@ function sendDataToSheet(name, matric, session, qrContent) {
   };
 
   console.log(data);
-  
+
   fetch(
     url +
       '?name=' + encodeURIComponent(data.name) +
