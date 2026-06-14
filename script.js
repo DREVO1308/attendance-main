@@ -56,6 +56,8 @@ function sendDataToSheet(name, matric, session, qrContent) {
     time: new Date().toLocaleTimeString()
   };
 
+  console.log(data);
+  
   fetch(
     url +
       '?name=' + encodeURIComponent(data.name) +
