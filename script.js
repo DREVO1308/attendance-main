@@ -60,20 +60,22 @@ function sendDataToSheet(name, matric, session, qrContent) {
   console.log(data);
 
   fetch(
-    url +
-      '?name=' + encodeURIComponent(data.name) +
-      '&matric=' + encodeURIComponent(data.matric) +
-      '&session=' + encodeURIComponent(data.session) +
-      '&qrCode=' + encodeURIComponent(data.qrCode) +
-      '&date=' + encodeURIComponent(data.date) +
-      '&time=' + encodeURIComponent(data.time),
-    { method: 'GET' }
-  )
-  .then(response => response.json())
-  .then(responseData => {
-    console.log('Success:', responseData);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+  url +
+    '?name=' + encodeURIComponent(data.name) +
+    '&matric=' + encodeURIComponent(data.matric) +
+    '&session=' + encodeURIComponent(data.session) +
+    '&qrCode=' + encodeURIComponent(data.qrCode) +
+    '&date=' + encodeURIComponent(data.date) +
+    '&time=' + encodeURIComponent(data.time),
+  {
+    method: 'GET',
+    mode: 'no-cors'
+  }
+)
+.then(() => {
+  console.log("Attendance sent successfully");
+})
+.catch(error => {
+  console.error('Error:', error);
+});
 }
